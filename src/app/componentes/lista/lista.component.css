@@ -1,3 +1,30 @@
+<div class="pokemon-grid">
+  @for(item of pokemonesCompleto; track item.id){
+    <mat-card class="pokemon-card">
+      <div class="pokemon-energy"></div>
+      <div class="pokemon-card-header">
+        <div class="pokemon-card-image-container">
+          <img [src]="item.sprites.front_default" alt="{{item.name}}" />
+        </div>
+        <mat-card-title class="pokemon-card-title">{{item.name}}</mat-card-title>
+      </div>
+      
+      <mat-card-content class="pokemon-card-content">
+        <p><strong>Tipo:</strong> {{ item.types[0].type.name }}</p>
+        <p><strong>Altura:</strong> {{ item.height }} decímetros</p>
+        <p><strong>Peso:</strong> {{ item.weight }} hectogramos</p>
+      </mat-card-content>
+      
+      <mat-card-actions class="pokemon-card-actions">
+        <button mat-button (click)="playSound(item.cries.latest)" class="pokemon-sound-button">
+          <h1>Click para escuchar tu Pokémon</h1>
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  }
+</div>
+
+<style>
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
 @font-face {
@@ -5,12 +32,6 @@
   src: url('https://db.onlinewebfonts.com/t/f4d1593471d222ddebd973210265762a.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
-}
-
-html, body {
-  height: 100%;
-  margin: 0;
-  font-family: Roboto, "Calibri", sans-serif;
 }
 
 .pokemon-grid {
@@ -29,10 +50,11 @@ html, body {
   overflow: hidden;
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
 }
 
 .pokemon-card:hover {
-  transform: scale(1.05);
+  transform: scale(1.05) rotate(2deg);
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.6);
 }
 
@@ -59,7 +81,7 @@ html, body {
 }
 
 .pokemon-card:hover .pokemon-card-image-container {
-  transform: rotate(5deg);
+  transform: rotate(-5deg) scale(1.1);
 }
 
 .pokemon-card-image-container img {
@@ -67,6 +89,11 @@ html, body {
   height: 100%;
   object-fit: cover;
   image-rendering: -webkit-optimize-contrast;
+  transition: filter 0.3s ease;
+}
+
+.pokemon-card:hover .pokemon-card-image-container img {
+  filter: brightness(1.2);
 }
 
 .pokemon-card-title {
@@ -138,8 +165,8 @@ html, body {
 }
 
 @keyframes sparkle {
-  0%, 100% { opacity: 0; }
-  50% { opacity: 1; }
+  0%, 100% { opacity: 0; transform: scale(0.5) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1.2) rotate(180deg); }
 }
 
 .pokemon-card::after {
@@ -149,4 +176,34 @@ html, body {
   right: -10px;
   font-size: 24px;
   animation: sparkle 2s infinite;
-  p
+  pointer-events: none;
+}
+
+.pokemon-energy {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: radial-gradient(circle, yellow, orange);
+  box-shadow: 0 0 10px rgba(255, 255, 0, 0.7);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.7; }
+}
+
+.pokemon-card:hover .pokemon-energy {
+  animation: energyBurst 0.5s forwards;
+}
+
+@keyframes energyBurst {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.5); opacity: 0.5; }
+  100% { transform: scale(1.2); opacity: 1; }
+}
+</style>
