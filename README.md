@@ -1,4 +1,4 @@
-# Pokeapi
+# Pokeapi en Angular
 api para consultar los primeros 20 pokmeon ,app creada en angular.
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.2.
 
